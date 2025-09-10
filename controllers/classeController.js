@@ -50,7 +50,7 @@ exports.getClasseById = async (req, res) => {
 
     if (!classe) return res.status(404).json({ message: 'Classe introuvable' });
 
-    res.status(200).json({ classe });
+    res.status(200).json(classe );
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

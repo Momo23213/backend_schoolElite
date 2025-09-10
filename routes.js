@@ -60,21 +60,21 @@ router.post('/enseignants', upload.single('photo'),enseignantController.createEn
 router.put('/enseignants/:id', enseignantController.updateEnseignant);
 router.delete('/enseignants/:id', enseignantController.deleteEnseignant);
 
-// ======================== CLASSES ========================
-router.post('/classe/creer', classeController.creerClasse);
-router.get('/classe', classeController.getAllClasses);
-router.get('/classe/:classeId', classeController.getClasseById);
-router.put('/classe/:classeId', classeController.updateClasse);
-router.delete('/classe/:classeId', classeController.deleteClasse);
-router.post('/classe/eleve/ajouter', classeController.ajouterEleve);
-router.post('/classe/eleve/retirer', classeController.retirerEleve);
-router.get('/classe/:classeId/eleves', classeController.getElevesClasse);
-router.get('/classe/:classeId/historique', classeController.getHistoriqueElevesClasse);
-router.post('classe/add-enseignant', classeController.addEnseignant);
-router.post('/remove-enseignant', classeController.removeEnseignant);
-router.post('classe/addMatiere', classeController.addMatiere);
-router.post('/remove', classeController.removeMatiere);
-router.get('/:classeId', classeController.getMatieres);
+// // ======================== CLASSES ========================
+// router.post('/classe/creer', classeController.creerClasse);
+// router.get('/classe', classeController.getAllClasses);
+// router.get('/classes/:classeId', classeController.getClasseById);
+// router.put('/classe/:classeId', classeController.updateClasse);
+// router.delete('/classe/:classeId', classeController.deleteClasse);
+// router.post('/classe/eleve/ajouter', classeController.ajouterEleve);
+// router.post('/classe/eleve/retirer', classeController.retirerEleve);
+// router.get('/classe/:classeId/eleves', classeController.getElevesClasse);
+// router.get('/classe/:classeId/historique', classeController.getHistoriqueElevesClasse);
+// router.post('classe/add-enseignant', classeController.addEnseignant);
+// router.post('/remove-enseignant', classeController.removeEnseignant);
+// router.post('classe/addMatiere', classeController.addMatiere);
+// router.post('/remove', classeController.removeMatiere);
+// router.get('/:classeId', classeController.getMatieres);
 
 
 // // ======================== MATIERES ========================
