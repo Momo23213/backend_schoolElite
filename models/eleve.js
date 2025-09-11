@@ -8,6 +8,7 @@ const eleveSchema = new mongoose.Schema({
   lieuNaissance: { type: String,required: true },
   sexe: { type: String,required: true,enum:['F',"M"] },
   parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  fraisId: { type: mongoose.Schema.Types.ObjectId, ref: 'FraisScolarite' },
   classeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Classe', required: true },
   parcours: [
     {

@@ -7,7 +7,10 @@ const genererMatricule = require('../utils/Matricule');
 // GET all
 exports.getAllEleves = async (req, res) => {
   try {
-    const eleves = await Eleve.find().populate('parentId').populate('classeId', 'nom niveau');
+    const eleves = await Eleve.find()
+    .populate('parentId')
+    .populate('fraisId')
+    .populate('classeId', 'nom niveau');
     res.status(200).json(eleves);
   } catch (err) {
     res.status(500).json({ message: err.message });

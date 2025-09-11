@@ -3,6 +3,7 @@ const Classe = require('../models/classe');
 const AnneeScolaire = require('../models/anneeScolaire');
 const FraisScolarite = require('../models/fraisScolarite');
 const { genererMatricule } = require('../utils/Matricule');
+const User = require('../models/user');
 const Paiement = require('../models/paiementScolaire')
 // -------------------
 // Inscrire un nouvel élève
@@ -42,6 +43,7 @@ exports.inscrireEleve = async (req, res) => {
       sexe,
        photo: req.file ? `/uploads/${req.file.filename}` : "/uploads/profile.png",
       classeId,
+      fraisId:frais._id,
       parcours: [{
         classeId,
         anneeScolaireId,
@@ -52,6 +54,17 @@ exports.inscrireEleve = async (req, res) => {
     });
     await eleve.save();
 
+
+    //creation de compte de l'eleve
+    const user = new User({
+      pseudo: nom + prenom,
+      email: matricule,
+      password: "12345678",
+      role: 'eleve',
+      photo: req.file ? `/uploads/${req.file.filename}` : "/uploads/profile.png",
+      id_eleve:eleve._id
+    });
+    await user.save();
     // Calcul du montant total (exclut reinscription)
     const montantTotal = frais.inscription + frais.tranche1 + frais.tranche2 + frais.tranche3;
     const montantRestant = montantTotal - montantPaye;

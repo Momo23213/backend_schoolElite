@@ -111,22 +111,64 @@ exports.getAllPaiements = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const [paiements, total] = await Promise.all([
-      Paiement.find()
-        .populate("anneeScolaireId")
-        .populate("classeId")
-        .populate("eleveId")
-        .skip(skip)
-        .limit(limit),
-      Paiement.countDocuments()
-    ]);
+   const [paiements, total] = await Promise.all([
+  Paiement.find()
+    .select("-__v")
+    .populate("anneeScolaireId")
+    .populate( "eleveId")
+    .skip(skip)
+    .limit(limit),
+  Paiement.countDocuments(),
+]);
 
-    res.status(200).json({ paiements, total });
+    res.status(200).json(paiements);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
   }
 };
+/**
+ * Récupérer tous les paiements d'un élève
+ */
+exports.getAllPaiement = async (req, res) => {
+  try {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+   const [paiements, total] = await Promise.all([
+  Paiement.find()
+    .select("-__v")
+    .populate("anneeScolaireId")
+    .populate({
+      path: "eleveId",
+      select: "-parcours",
+      populate: [
+        {
+          path: "classeId",
+          model: "Classe",
+          select: "nom",
+        },
+        {
+          path: "fraisId",
+          model: "FraisScolarite",
+          select: "-classeId -anneeScolaireId",
+        },
+      ],
+    })
+    .skip(skip)
+    .limit(limit),
+  Paiement.countDocuments(),
+]);
+
+    res.status(200).json(paiements);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 /**
  * Récupérer tous les paiements d'un élève
  */
