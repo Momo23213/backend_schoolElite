@@ -99,13 +99,13 @@ router.post('/presences', presenceController.createPresence);
 router.put('/presences/:id', presenceController.updatePresence);
 router.delete('/presences/:id', presenceController.deletePresence);
 
-// ======================== PAIEMENTS ========================
-router.post('/creer', paiementController.creerPaiement);
-router.post('/ajouter', paiementController.ajouterPaiement);
-router.get('/affichesPaiements', paiementController.getAllPaiements );
-router.get('/paiement/eleves/:eleveId', paiementController.getPaiementsEleve);
-router.get('/:eleveId/:classeId/:anneeScolaireId', paiementController.getPaiementParAnneeClasse);
-router.delete('/:paiementId', paiementController.supprimerPaiement);
+// // ======================== PAIEMENTS ========================
+// router.post('/creer', paiementController.creerPaiement);
+// router.post('/ajouter', paiementController.ajouterPaiement);
+// router.get('/affichesPaiements', paiementController.getAllPaiements );
+// router.get('/paiement/eleves/:eleveId', paiementController.getPaiementsEleve);
+// router.get('/:eleveId/:classeId/:anneeScolaireId', paiementController.getPaiementParAnneeClasse);
+// router.delete('/:paiementId', paiementController.supprimerPaiement);
 
 
 // ======================== NOTIFICATIONS ========================

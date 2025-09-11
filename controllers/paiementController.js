@@ -45,6 +45,8 @@ exports.creerPaiement = async (req, res) => {
  * Ajouter un paiement partiel
  */
 exports.ajouterPaiement = async (req, res) => {
+  console.log(req.body);
+  
   try {
     const { eleveId, classeId, anneeScolaireId, typePaiement, montant } = req.body;
 
@@ -77,12 +79,21 @@ exports.ajouterPaiement = async (req, res) => {
 exports.getAllPaiements = async (req, res) => {
   try {
 
-    const paiements = await Paiement.find()
-    .populate("anneeScolaireId")
-    .populate("classeId")
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json(paiements); 
-    // <-- renvoie directement le tableau
+    const [paiements, total] = await Promise.all([
+      Paiement.find()
+        .populate("anneeScolaireId")
+        .populate("classeId")
+        .populate("eleveId")
+        .skip(skip)
+        .limit(limit),
+      Paiement.countDocuments()
+    ]);
+
+    res.status(200).json({ paiements, total });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
