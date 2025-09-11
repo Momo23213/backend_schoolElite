@@ -1,7 +1,8 @@
 const Eleve = require('../models/eleve');
 const path = require('path');
 const fs = require('fs');
-const genererMatricule = require('../utils/Matricule');
+const genererMatricule = require('../utils/genereMatricule');
+
 
 
 // GET all

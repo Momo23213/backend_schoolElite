@@ -2,9 +2,11 @@ const Eleve = require('../models/eleve');
 const Classe = require('../models/classe');
 const AnneeScolaire = require('../models/anneeScolaire');
 const FraisScolarite = require('../models/fraisScolarite');
-const { genererMatricule } = require('../utils/Matricule');
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/user');
-const Paiement = require('../models/paiementScolaire')
+const Paiement = require('../models/paiementScolaire');
+const genererMatricule = require('../utils/genereMatricule');
 // -------------------
 // Inscrire un nouvel élève
 // -------------------
@@ -54,12 +56,14 @@ exports.inscrireEleve = async (req, res) => {
     });
     await eleve.save();
 
+  // Hasher le mot de passe
+  const hashedPassword = await bcrypt.hash("12345678", 10);
 
     //creation de compte de l'eleve
     const user = new User({
       pseudo: nom + prenom,
       email: matricule,
-      password: "12345678",
+      password: hashedPassword,
       role: 'eleve',
       photo: req.file ? `/uploads/${req.file.filename}` : "/uploads/profile.png",
       id_eleve:eleve._id

@@ -69,16 +69,43 @@ exports.loginUser = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 jours
     });
 
-    res.status(200).json({
-      message: "Connexion réussie",
-      user: {
-        id: user._id,
-        pseudo: user.pseudo,
-        email: user.email,
-        role: user.role
-      },
-      token
-    });
+ 
+    if(user.role==="eleve"){
+      res.status(200).json({
+        message: "Connexion réussie",
+        user: {
+          id: user.id_eleve,
+          pseudo: user.pseudo,
+          email: user.email,
+          role: user.role,
+        },
+        token
+      });
+    }else if(user.role==="enseignant"){
+      res.status(200).json({
+        message: "Connexion réussie",
+        user: {
+          id: user.id_prof,
+          pseudo: user.pseudo,
+          email: user.email,
+          role: user.role,
+        },
+        token
+      });
+    }else{
+      res.status(200).json({
+        message: "Connexion réussie",
+        user: {
+          id: user.id,
+          pseudo: user.pseudo,
+          email: user.email,
+          role: user.role,
+        },
+        token
+      });
+    }
+     
+    
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
