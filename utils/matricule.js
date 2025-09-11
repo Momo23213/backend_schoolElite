@@ -1,5 +1,5 @@
 // Fonction pour générer un matricule avec 3 paramètres
-exports.genererMatricule = (param1, param2, param3)=>{
+const genererMatricule = (param1, param2, param3)=>{
    prefix="ELIS";
   // Prendre les 3 premières lettres de chaque paramètre et mettre en majuscule
   const p1 = param1.substring(0, 3).toUpperCase();
@@ -13,3 +13,4 @@ exports.genererMatricule = (param1, param2, param3)=>{
   return `${prefix}${p1}-${p2}${p3}-${randomNum}`;
 }
 
+module.exports=genererMatricule

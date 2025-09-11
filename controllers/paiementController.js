@@ -1,12 +1,21 @@
 const Paiement = require('../models/paiementScolaire');
 const Eleve = require('../models/eleve');
+const mongoose = require('mongoose');
 
 /**
  * Créer un paiement initial (inscription ou réinscription)
  */
 exports.creerPaiement = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  
   try {
     const { eleveId, classeId, anneeScolaireId, montantTotal, montantPaye } = req.body;
+
+    // Validation
+    if (!eleveId || !classeId || !anneeScolaireId || montantTotal <= 0 || montantPaye < 0) {
+      return res.status(400).json({ message: 'Données invalides' });
+    }
 
     const montantRestant = montantTotal - montantPaye;
 
@@ -21,23 +30,26 @@ exports.creerPaiement = async (req, res) => {
         { typePaiement: 'initial', montant: montantPaye, datePaiement: new Date() }
       ]
     });
-    await paiement.save();
+    await paiement.save({ session });
 
     // Mettre à jour l'élève
-    const eleve = await Eleve.findById(eleveId);
-    if (eleve) {
-      if (!eleve.montantPaye) eleve.montantPaye = 0;
-      if (!eleve.montantRestant) eleve.montantRestant = 0;
-
-      eleve.montantPaye += montantPaye;
-      eleve.montantRestant += montantRestant;
-      eleve.statutPaiement = eleve.montantRestant <= 0 ? 'à jour' : 'en attente';
-      await eleve.save();
+    const eleve = await Eleve.findById(eleveId).session(session);
+    if (!eleve) {
+      throw new Error('Élève introuvable');
     }
 
+    eleve.montantPaye = (eleve.montantPaye || 0) + montantPaye;
+    eleve.montantRestant = (eleve.montantRestant || 0) + montantRestant;
+    eleve.statutPaiement = eleve.montantRestant <= 0 ? 'à jour' : 'en attente';
+    await eleve.save({ session });
+
+    await session.commitTransaction();
     res.status(201).json({ message: 'Paiement initial créé', paiement, eleve });
   } catch (err) {
+    await session.abortTransaction();
     res.status(500).json({ message: err.message });
+  } finally {
+    session.endSession();
   }
 };
 
@@ -45,31 +57,47 @@ exports.creerPaiement = async (req, res) => {
  * Ajouter un paiement partiel
  */
 exports.ajouterPaiement = async (req, res) => {
-  console.log(req.body);
+  const session = await mongoose.startSession();
+  session.startTransaction();
   
   try {
     const { eleveId, classeId, anneeScolaireId, typePaiement, montant } = req.body;
 
-    let paiement = await Paiement.findOne({ eleveId, classeId, anneeScolaireId });
-    if (!paiement) return res.status(400).json({ message: 'Paiement non initialisé' });
+    // Validation
+    if (!eleveId || !montant || montant <= 0) {
+      return res.status(400).json({ message: 'Données invalides' });
+    }
+
+    const paiement = await Paiement.findOne({ eleveId, classeId, anneeScolaireId }).session(session);
+    if (!paiement) {
+      return res.status(400).json({ message: 'Paiement non initialisé' });
+    }
+
+    if (paiement.montantRestant < montant) {
+      return res.status(400).json({ message: 'Montant supérieur au restant dû' });
+    }
 
     paiement.paiements.push({ typePaiement, montant, datePaiement: new Date() });
     paiement.montantPaye += montant;
     paiement.montantRestant = paiement.montantTotal - paiement.montantPaye;
-    await paiement.save();
+    await paiement.save({ session });
 
     // Mettre à jour l'élève
-    const eleve = await Eleve.findById(eleveId);
+    const eleve = await Eleve.findById(eleveId).session(session);
     if (eleve) {
       eleve.montantPaye += montant;
       eleve.montantRestant -= montant;
       eleve.statutPaiement = eleve.montantRestant <= 0 ? 'à jour' : 'en attente';
-      await eleve.save();
+      await eleve.save({ session });
     }
 
+    await session.commitTransaction();
     res.status(200).json({ message: 'Paiement ajouté', paiement, eleve });
   } catch (err) {
+    await session.abortTransaction();
     res.status(500).json({ message: err.message });
+  } finally {
+    session.endSession();
   }
 };
 
@@ -106,12 +134,16 @@ exports.getPaiementsEleve = async (req, res) => {
   try {
     const { eleveId } = req.params;
 
-    const paiements = await Paiement.find({eleveId})
-    .populate("anneeScolaireId")
-    .populate("classeId")
+    if (!mongoose.Types.ObjectId.isValid(eleveId)) {
+      return res.status(400).json({ message: 'ID élève invalide' });
+    }
 
-    res.status(200).json(paiements); 
-    // <-- renvoie directement le tableau
+    const paiements = await Paiement.find({ eleveId })
+      .populate('anneeScolaireId')
+      .populate('classeId')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(paiements);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });

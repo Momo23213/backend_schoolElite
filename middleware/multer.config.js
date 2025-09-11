@@ -1,7 +1,8 @@
 const path = require("path");
 const fs = require("fs");
 const multer=require("multer");
-const { genererMatricule } = require("../utils/Matricule");
+const genererMatricule = require("../utils/Matricule");
+
 
 // Créer le dossier uploads s'il n'existe pas
 if (!fs.existsSync('./uploads')) {
