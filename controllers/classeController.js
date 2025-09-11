@@ -7,12 +7,12 @@ const AnneeScolaire = require('../models/anneeScolaire');
 // -------------------
 exports.creerClasse = async (req, res) => {
   try {
-    const { nom, niveau, anneeScolaireId,effMax } = req.body;
+    const { nom, niveau, anneeScolaireId,effMax ,cycle,salle} = req.body;
 
     const annee = await AnneeScolaire.findById(anneeScolaireId);
     if (!annee) return res.status(404).json({ message: 'Année scolaire introuvable' });
 
-    const classe = new Classe({ nom, niveau, anneeScolaireId,effMax });
+    const classe = new Classe({ nom, niveau, anneeScolaireId,effMax ,cycle,salle});
     await classe.save();
 
     res.status(201).json({ message: 'Classe créée avec succès', classe });

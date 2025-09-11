@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const classeSchema = new mongoose.Schema({
   nom: { type: String, required: true }, // ex: CP1, 6èmeA
+  cycle: { type: String, required: true }, // ex: CP1, 6èmeA
+  salle: { type: String, required: true }, // ex: CP1, 6èmeA
   niveau: { type: String }, // maternelle, primaire, collège, lycée
   enseignants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Enseignant' }],
   effMax:{type:Number,defaut:100, required:true},
