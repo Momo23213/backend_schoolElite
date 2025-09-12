@@ -53,12 +53,6 @@ router.get('/notes/moyenne/:eleveId/annee/:anneeScolaireId', calculeController.g
 router.get('/notes/classe/:classeId/trimestre/:trimestre', calculeController.getClasseRangTrimestre);
 router.get('/notes/classe/:classeId/annee/:anneeScolaireId', calculeController.getClasseRangAnnuelle);
 
-// ======================== ENSEIGNANTS ========================
-router.get('/enseignants', enseignantController.getAllEnseignants);
-router.get('/enseignants/:id', enseignantController.getEnseignantById);
-router.post('/enseignants', upload.single('photo'),enseignantController.createEnseignant);
-router.put('/enseignants/:id', enseignantController.updateEnseignant);
-router.delete('/enseignants/:id', enseignantController.deleteEnseignant);
 
 // // ======================== CLASSES ========================
 // router.post('/classe/creer', classeController.creerClasse);
