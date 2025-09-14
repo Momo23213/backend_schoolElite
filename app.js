@@ -30,6 +30,7 @@ app.use(cookieParser());
 
 app.use(logger)
 // Routes messages sécurisées
+app.use("/api/annee",require("./routes/anneeScolaire.routes"))
 app.use("/api/enseignants",require("./routes/enseignant.routes"))
 app.use("/api/paiements",require("./routes/paiement.routes"))
 app.use("/api/classe",require("./routes/classes.routes"))
