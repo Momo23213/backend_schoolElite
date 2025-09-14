@@ -12,9 +12,15 @@ const error=require("./middleware/errorHandler")
 const app = express();
 // 📂 Dossier pour stocker les images
 app.use("/uploads", express.static("uploads"));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://http://localhost:5000",
+  "https://eliteschool.onrender.com"
+];
+
 app.use(cors({
-    origin:"http://localhost:3000",
-    credentials:true
+  origin: allowedOrigins,
+  credentials: true
 }));
 
 db()
