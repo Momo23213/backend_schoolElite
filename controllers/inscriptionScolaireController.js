@@ -12,7 +12,7 @@ const genererMatricule = require('../utils/genereMatricule');
 // -------------------
 exports.inscrireEleve = async (req, res) => {
   try {
-    const { nom, prenom, classeId, anneeScolaireId, typeInscription, dateNaissance,lieuNaissance, sexe, montantPaye } = req.body;
+    const { nom, prenom, classeId, anneeScolaireId, dateNaissance,lieuNaissance, sexe, montantPaye } = req.body;
     
     // Vérifier que la classe et l'année scolaire existent
     const classe = await Classe.findById(classeId);
@@ -50,7 +50,7 @@ exports.inscrireEleve = async (req, res) => {
         classeId,
         anneeScolaireId,
         dateInscription: new Date(),
-        typeInscription: typeInscription || 'nouveau'
+        typeInscription: 'nouveau'
       }],
       statut: 'inscrit'
     });
