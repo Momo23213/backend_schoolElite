@@ -55,7 +55,7 @@ exports.getFraisByClasseAnnee = async (req, res) => {
 
     const frais = await FraisScolarite.findOne({ classeId, anneeScolaireId })
       .populate('classeId', 'nom niveau')
-      .populate('anneeScolaireId', 'nomDebut nomFin');
+      .populate('anneeScolaireId');
 
     if (!frais) return res.status(404).json({ message: 'Frais scolaires introuvables' });
 
