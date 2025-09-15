@@ -69,7 +69,7 @@ exports.createEleve = async (req, res) => {
       classeId,
       dateNaissance,
       lieuNaissance,
-      profile: req.file ? `/uploads/${req.file.filename}` : "/uploads/profile.png"
+      profile: req.file ? req.file.path : ""
     })
     await eleve.save();
     res.status(201).json(eleve);

@@ -1,35 +1,35 @@
-const path = require("path");
-const fs = require("fs");
-const multer=require("multer");
+const multer = require("multer");
+const { v2: cloudinary } = require("cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const genererMatricule = require("../utils/genereMatricule");
+require("dotenv").config();
 
+// Configurer Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// Créer le dossier uploads s'il n'existe pas
-if (!fs.existsSync('./uploads')) {
-  fs.mkdirSync('./uploads');
-}
+// Stockage Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const { nom, prenom, lieuNaissance } = req.body;
+    const ext = file.mimetype.split("/")[1]; // récupérer l'extension à partir du type MIME
+    const filename = `${genererMatricule(prenom, nom, lieuNaissance)}.${ext}`;
 
+    return {
+      folder: "eleves", // dossier Cloudinary
+      public_id: filename, // nom du fichier
+      allowed_formats: ["jpg", "jpeg", "png"],
+    };
+  },
+});
 
-const storages= multer.diskStorage({
-    destination:function(req,file,cd){
-        cd(null,"uploads")
-    },
-    filename:function(req,file,cd){
-        // cd(null,file.originalname)
-       const name = path.parse(file.originalname).name;
-    const ext = path.extname(file.originalname);
-  const {nom, prenom, lieuNaissance } = req.body
-    // ➤ Nettoyer le nom : remplacer les espaces et caractères spéciaux
-    // const cleanName = name
-    //   .toLowerCase()
-    //   .replace(/\s+/g, '-')         // espaces → tirets
-    //   .replace(/[^a-z0-9\-]/g, ''); // enlever caractères spéciaux
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo max
+});
 
-    cd(null, `${genererMatricule(prenom,nom,lieuNaissance)}${ext}`);
-
-    },
-    limits:{ fileSize: 5 * 1024 * 1024 } // 5 Mo max
-})
-
-
-module.exports=multer({storage:storages})
+module.exports = upload;

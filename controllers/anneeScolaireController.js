@@ -64,7 +64,7 @@ exports.deleteAnnee = async (req, res) => {
 
 
 // Créer une nouvelle année
-export const createAnnee = async (req, res) => {
+exports.createAnnee = async (req, res) => {
   try {
     const { libelle, dateDebut, dateFin, active } = req.body;
 
@@ -92,7 +92,7 @@ export const createAnnee = async (req, res) => {
 };
 
 // Récupérer toutes les années
-export const getAllAnnees = async (req, res) => {
+exports.getAllAnnees = async (req, res) => {
   try {
     const annees = await AnneeScolaire.find().sort({ dateDebut: -1 });
     res.json(annees);
@@ -103,7 +103,7 @@ export const getAllAnnees = async (req, res) => {
 };
 
 // Récupérer l'année active
-export const getActiveAnnee = async (req, res) => {
+exports.getActiveAnnee = async (req, res) => {
   try {
     const activeAnnee = await AnneeScolaire.findOne({ active: true });
     if (!activeAnnee) return res.status(404).json({ message: "Aucune année active trouvée" });
@@ -115,7 +115,7 @@ export const getActiveAnnee = async (req, res) => {
 };
 
 // Basculer une année en active
-export const setActiveAnnee = async (req, res) => {
+exports.setActiveAnnee = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -139,7 +139,7 @@ export const setActiveAnnee = async (req, res) => {
 };
 
 // Mettre à jour une année (libelle, dates)
-export const updateAnnee = async (req, res) => {
+exports.updateAnnee = async (req, res) => {
   try {
     const { id } = req.params;
     const { libelle, dateDebut, dateFin, active } = req.body;
@@ -169,7 +169,7 @@ export const updateAnnee = async (req, res) => {
 };
 
 // Supprimer une année
-export const deleteAnnee = async (req, res) => {
+exports.deleteAnnee = async (req, res) => {
   try {
     const { id } = req.params;
     const annee = await AnneeScolaire.findByIdAndDelete(id);

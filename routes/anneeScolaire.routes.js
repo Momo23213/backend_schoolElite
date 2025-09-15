@@ -1,12 +1,12 @@
 const express=require(  "express");
-import {
+const {
   createAnnee,
   getAllAnnees,
   getActiveAnnee,
   setActiveAnnee,
   updateAnnee,
   deleteAnnee
-} from "../controllers/anneeController.js";
+} =require( "../controllers/anneeScolaireController.js");
 
 const router = express.Router();
 
@@ -17,4 +17,4 @@ router.put("/active/:id", setActiveAnnee); // Mettre une année en active
 router.put("/:id", updateAnnee);         // Mettre à jour une année
 router.delete("/:id", deleteAnnee);      // Supprimer une année
 
-export default router;
+module.exports= router;
