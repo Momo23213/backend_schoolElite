@@ -43,7 +43,7 @@ exports.inscrireEleve = async (req, res) => {
       dateNaissance,
       lieuNaissance,
       sexe,
-       photo: req.file ? `/uploads/${req.file.filename}` : "/uploads/profile.png",
+       photo: req.file ? `${req.file.path}` : "/uploads/profile.png",
       classeId,
       fraisId:frais._id,
       parcours: [{

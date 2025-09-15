@@ -2,7 +2,6 @@ const multer = require("multer");
 const { v2: cloudinary } = require("cloudinary");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const genererMatricule = require("../utils/genereMatricule");
-require("dotenv").config();
 
 // Configurer Cloudinary
 cloudinary.config({

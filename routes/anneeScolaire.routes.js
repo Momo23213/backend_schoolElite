@@ -1,12 +1,6 @@
-const express=require(  "express");
-const {
-  createAnnee,
-  getAllAnnees,
-  getActiveAnnee,
-  setActiveAnnee,
-  updateAnnee,
-  deleteAnnee
-} =require( "../controllers/anneeScolaireController.js");
+const express=require("express");
+const { createAnnee, getAllAnnees, getActiveAnnee, setActiveAnnee, updateAnnee, deleteAnnee } = require("../controllers/anneeScolaireController");
+
 
 const router = express.Router();
 
