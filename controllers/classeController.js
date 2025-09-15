@@ -149,7 +149,7 @@ exports.retirerEleve = async (req, res) => {
 exports.getElevesClasse = async (req, res) => {
   try {
     const { classeId } = req.params;
-    const classe = await Classe.findById(classeId).populate('eleves', 'nom prenom photo');
+    const classe = await Classe.findById(classeId).populate('eleves', 'nom prenom photo matricule');
     if (!classe) return res.status(404).json({ message: 'Classe introuvable' });
 
     res.status(200).json(classe.eleves );

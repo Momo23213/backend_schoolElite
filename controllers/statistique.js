@@ -10,6 +10,10 @@ exports.getStatistiques = async (req, res) => {
     const totalEleves = await Eleve.countDocuments();
     const totalClasses = await Classe.countDocuments();
 
+    // Répartition des élèves par sexe
+    const sexeStats = await Eleve.aggregate([
+      { $group: { _id: "$sexe", count: { $sum: 1 } } }
+    ]);
     // Toutes les classes avec leurs élèves
     const classes = await Classe.find().populate("eleves");
 
@@ -40,6 +44,7 @@ exports.getStatistiques = async (req, res) => {
     res.status(200).json({
       totalEleves,
       totalClasses,
+      sexeStats,
       revenuAnnuel,
       revenuActuel,
       revenuRestant,
