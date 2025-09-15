@@ -5,7 +5,7 @@ const db=require("./db/db")
 const cookieParser = require('cookie-parser');
 const https = require("https");
 
-
+const statistiquesRoutes = require("./routes/statistiques.routes");
 const logger=require("./middleware/logger")
 const error=require("./middleware/errorHandler")
 
@@ -30,6 +30,7 @@ app.use(cookieParser());
 
 app.use(logger)
 // Routes messages sécurisées
+app.use("/api/statistiques", statistiquesRoutes);
 app.use("/api/annee",require("./routes/anneeScolaire.routes"))
 app.use("/api/enseignants",require("./routes/enseignant.routes"))
 app.use("/api/paiements",require("./routes/paiement.routes"))
