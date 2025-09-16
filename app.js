@@ -119,18 +119,49 @@ io.on('connection', (socket) => {
     console.log(`Message émis vers la room ${roomName}`);
   });
 
-  // Envoyer un message de groupe
-  socket.on('send_group_message', (data) => {
+  // Gérer l'envoi de messages de groupe
+  socket.on('send_group_message', async (data) => {
+    console.log('📨 Message de groupe reçu:', data);
     const { expediteur, classeId, contenu, messageId } = data;
     
-    // Émettre le message à tous les membres du groupe
-    io.to(`class_${classeId}`).emit('receive_message', {
-      _id: messageId,
-      expediteur: data.expediteurData,
-      contenu,
-      createdAt: new Date(),
-      type: 'group'
-    });
+    try {
+      // Sauvegarder le message dans la base de données
+      const Message = require('./models/message');
+      const newMessage = new Message({
+        expediteur,
+        classeId,
+        contenu,
+        type: 'group'
+      });
+      
+      const savedMessage = await newMessage.save();
+      const populatedMessage = await Message.findById(savedMessage._id)
+        .populate('expediteur', 'nom prenom photo');
+      
+      console.log('💾 Message de groupe sauvegardé en DB:', savedMessage._id);
+      console.log(`📤 Émission du message de groupe vers la room: class_${classeId}`);
+      
+      // Émettre le message à tous les membres de la classe avec les données de la DB
+      io.to(`class_${classeId}`).emit('receive_message', {
+        ...populatedMessage.toObject(),
+        type: 'group',
+        classeId: classeId
+      });
+      
+      console.log('✅ Message de groupe émis avec succès');
+    } catch (error) {
+      console.error('❌ Erreur lors de la sauvegarde du message de groupe:', error);
+      
+      // En cas d'erreur, émettre quand même le message en temps réel
+      io.to(`class_${classeId}`).emit('receive_message', {
+        _id: messageId,
+        expediteur: data.expediteurData,
+        contenu,
+        createdAt: new Date(),
+        type: 'group',
+        classeId: classeId
+      });
+    }
   });
 
   // Notification de frappe
