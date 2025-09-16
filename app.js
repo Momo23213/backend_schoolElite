@@ -104,7 +104,10 @@ io.on('connection', (socket) => {
     const { expediteur, destinataire, contenu, messageId } = data;
     const roomName = [expediteur, destinataire].sort().join('_');
     
-    // Émettre le message à tous les utilisateurs de la conversation
+    console.log(`Message privé envoyé dans la room: ${roomName}`);
+    console.log('Données du message:', data);
+    
+    // Émettre le message à tous les utilisateurs de la conversation (y compris l'expéditeur)
     io.to(roomName).emit('receive_message', {
       _id: messageId,
       expediteur: data.expediteurData,
@@ -112,6 +115,8 @@ io.on('connection', (socket) => {
       createdAt: new Date(),
       type: 'private'
     });
+    
+    console.log(`Message émis vers la room ${roomName}`);
   });
 
   // Envoyer un message de groupe
