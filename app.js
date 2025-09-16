@@ -46,6 +46,7 @@ app.use("/api/frais", require("./routes/fraiScolaire.routes"));
 app.use("/api/statistiques", statistiquesRoutes);
 app.use("/api/annee",require("./routes/anneeScolaire.routes"))
 app.use("/api/enseignants",require("./routes/enseignant.routes"))
+// app.use("/api/eleves",require("./routes/eleves.routes"))
 app.use("/api/paiements",require("./routes/paiement.routes"))
 app.use("/api/classe",require("./routes/classes.routes"))
 app.use("/api/matieres",require("./routes/matieres.routes"))
