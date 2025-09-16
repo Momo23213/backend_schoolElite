@@ -33,10 +33,10 @@ router.get('/eleves/:id', eleveController.getEleveById);
 // router.put('/eleves/:id', eleveController.updateEleve);
 // router.delete('/eleves/:id', eleveController.deleteEleve);
 
-// ======================== FRAI SCOLAIRE ========================
-router.post('/frai', fraisController.createOrUpdateFrais);
-router.get('/:classeId/:anneeScolaireId', fraisController.getFraisByClasseAnnee);
-router.get('/fraisListe', fraisController.getAllFrais);
+// // ======================== FRAI SCOLAIRE ========================
+// router.post('/frai', fraisController.createOrUpdateFrais);
+// router.get('/:classeId/:anneeScolaireId', fraisController.getFraisByClasseAnnee);
+// router.get('/fraisListe', fraisController.getAllFrais);
 
 // ======================== INSCRIPTION ========================
 router.post('/inscrire', upload.single('photo'), inscrti.inscrireEleve);
@@ -78,13 +78,13 @@ router.get('/notes/classe/:classeId/annee/:anneeScolaireId', calculeController.g
 // router.put('/matieres/:id', matiereController.updateMatiere);
 // router.delete('/matieres/:id', matiereController.deleteMatiere);
 
-// ======================== EMPLOI DU TEMPS ========================
-router.get('/emplois', emploiController.getAllEmplois);
-router.get('/emplois/:id', emploiController.getEmploiById);
-router.get('/emplois/classe/:classeId/annee/:anneeScolaireId', emploiController.getEmploiByClasseAnnee);
-router.post('/emplois', emploiController.createEmploi);
-router.put('/emplois/:id', emploiController.updateEmploi);
-router.delete('/emplois/:id', emploiController.deleteEmploi);
+// // ======================== EMPLOI DU TEMPS ========================
+// router.get('/emplois', emploiController.getAllEmplois);
+// router.get('/emplois/:id', emploiController.getEmploiById);
+// router.get('/emplois/classe/:classeId/annee/:anneeScolaireId', emploiController.getEmploiByClasseAnnee);
+// router.post('/emplois', emploiController.createEmploi);
+// router.put('/emplois/:id', emploiController.updateEmploi);
+// router.delete('/emplois/:id', emploiController.deleteEmploi);
 
 // ======================== PRESENCES ========================
 router.get('/presences', presenceController.getAllPresences);

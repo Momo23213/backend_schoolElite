@@ -30,6 +30,7 @@ app.use(cookieParser());
 
 app.use(logger)
 // Routes messages sécurisées
+app.use("/api/emplois", require("./routes/emploiDuTemps.routes"));
 app.use("/api/frais", require("./routes/fraiScolaire.routes"));
 app.use("/api/statistiques", statistiquesRoutes);
 app.use("/api/annee",require("./routes/anneeScolaire.routes"))
