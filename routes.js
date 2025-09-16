@@ -116,12 +116,12 @@ router.post('/users', userController.createUser);
 router.put('/users/:id', userController.updateUser);
 router.delete('/users/:id', userController.deleteUser);
 
-// ======================== MESSAGE ========================
-router.get('/messages/room/:room', messageController.getMessagesByRoom);
-router.get('/messages/private/:user1/:user2', messageController.getPrivateMessages);
-router.post('/messages', messageController.createMessage);
-router.put('/messages/:id', messageController.updateMessage);
-router.delete('/messages/:id', messageController.deleteMessage);
+// // ======================== MESSAGE ========================
+// router.get('/messages/room/:room', messageController.getMessagesByRoom);
+// router.get('/messages/private/:user1/:user2', messageController.getPrivateMessages);
+// router.post('/messages', messageController.createMessage);
+// router.put('/messages/:id', messageController.updateMessage);
+// router.delete('/messages/:id', messageController.deleteMessage);
 
 
 

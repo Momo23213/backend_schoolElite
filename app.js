@@ -53,6 +53,7 @@ app.use("/api/matieres",require("./routes/matieres.routes"))
 app.use("/api/notes",require("./routes/notes.routes"))
 app.use("/api/messages",require("./routes/messages.routes"))
 app.use("/api/auth",require("./auth.routes"))
+app.use("/api",require("./routes"))
 app.use(error)
 
 
