@@ -47,7 +47,7 @@ exports.inscrireEleve = async (req, res) => {
         if(!req.file){
           matricule= genererMatricule(prenom,nom,lieuNaissance)
         }else{
-          matricule=removePrefixSuffix(req.filename, "élève/", ".")
+          matricule=removePrefixSuffix(req.file.filename, "élève/", ".")
         }
 
     // Créer l’élève
