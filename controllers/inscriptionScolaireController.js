@@ -28,11 +28,20 @@ exports.inscrireEleve = async (req, res) => {
       return res.status(400).json({ message: `Le montant minimum pour l'inscription est ${frais.inscription}` });
     }
 
+
+    function nettoyerNomFichier(str) {
+      return str
+        // Supprimer "élève/" au début
+        .replace(/^élève\//, "")
+        // Supprimer l'extension à la fin (ex: .pgn, .jpg, .png, etc.)
+        .replace(/\.[^.]+$/, "");
+    }
+
        let matricule;
         if(!req.file){
           matricule= genererMatricule(prenom,nom,lieuNaissance)
         }else{
-          matricule=req.file.filename.slice(0,-4)
+          matricule=nettoyerNomFichier(req.file.filename)
         }
 
     // Créer l’élève
