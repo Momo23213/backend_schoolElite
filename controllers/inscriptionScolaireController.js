@@ -37,16 +37,9 @@ exports.inscrireEleve = async (req, res) => {
         .replace(/\.[^.]+$/, "");
     }
 
-       let matricule;
-        if(!req.file){
-          matricule= genererMatricule(prenom,nom,lieuNaissance)
-        }else{
-          matricule=nettoyerNomFichier(req.file.filename)
-        }
-
     // Créer l’élève
     const eleve = new Eleve({
-      matricule:matricule,
+      matricule:genererMatricule(prenom,nom,lieuNaissance),
       nom,
       prenom,
       dateNaissance,
