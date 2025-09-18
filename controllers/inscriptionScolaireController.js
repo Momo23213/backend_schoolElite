@@ -11,7 +11,6 @@ const genererMatricule = require('../utils/genereMatricule');
 // Inscrire un nouvel élève
 // -------------------
 exports.inscrireEleve = async (req, res) => {
-   let matricule;
   try {
     const { nom, prenom, classeId, anneeScolaireId, dateNaissance,lieuNaissance, sexe, montantPaye } = req.body;
     
@@ -19,6 +18,8 @@ exports.inscrireEleve = async (req, res) => {
     const classe = await Classe.findById(classeId);
     const annee = await AnneeScolaire.findById(anneeScolaireId);
     if (!classe || !annee) return res.status(404).json({ message: 'Classe ou année scolaire introuvable' });
+
+    const matricule= genererMatricule(prenom,nom,lieuNaissance);
 
     // Vérifier les frais pour cette classe et année
     const frais = await FraisScolarite.findOne({ classeId, anneeScolaireId });
@@ -30,27 +31,27 @@ exports.inscrireEleve = async (req, res) => {
     }
 
 
-  function removePrefixSuffix(str, prefix, suffix) {
-  // Supprime le préfixe si présent
-  if (str.startsWith(prefix)) {
-    str = str.slice(prefix.length);
-  }
+//   function removePrefixSuffix(str, prefix, suffix) {
+//   // Supprime le préfixe si présent
+//   if (str.startsWith(prefix)) {
+//     str = str.slice(prefix.length);
+//   }
 
-  // Supprime le suffixe si présent
-  if (str.endsWith(suffix)) {
-    str = str.slice(0, -suffix.length);
-  }
+//   // Supprime le suffixe si présent
+//   if (str.endsWith(suffix)) {
+//     str = str.slice(0, -suffix.length);
+//   }
 
-  return str;
-}
+//   return str;
+// }
 
     // Générer le matricule
    
-    if(!req.file){
-      matricule = genererMatricule(prenom,nom,lieuNaissance);
-    } else {
-      matricule = removePrefixSuffix(req.file.filename, "eleves/", ".");
-    }
+    // if(!req.file){
+    //   matricule = ;
+    // } else {
+    //   matricule = removePrefixSuffix(req.file.filename, "eleves/", ".");
+    // }
 
     // Créer l’élève
     const eleve = new Eleve({
