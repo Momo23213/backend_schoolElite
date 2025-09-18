@@ -29,19 +29,25 @@ exports.inscrireEleve = async (req, res) => {
     }
 
 
-    function nettoyerNomFichier(str) {
-      return str
-        // Supprimer "élève/" au début
-        .replace(/^élève\//, "")
-        // Supprimer l'extension à la fin (ex: .pgn, .jpg, .png, etc.)
-        .replace(/\.[^.]+$/, "");
-    }
+  function removePrefixSuffix(str, prefix, suffix) {
+  // Supprime le préfixe si présent
+  if (str.startsWith(prefix)) {
+    str = str.slice(prefix.length);
+  }
+
+  // Supprime le suffixe si présent
+  if (str.endsWith(suffix)) {
+    str = str.slice(0, -suffix.length);
+  }
+
+  return str;
+}
 
        let matricule;
         if(!req.file){
           matricule= genererMatricule(prenom,nom,lieuNaissance)
         }else{
-          matricule=nettoyerNomFichier(`${req.file.filename}`)
+          matricule=removePrefixSuffix(req.filename, "élève/", ".")
         }
 
     // Créer l’élève
