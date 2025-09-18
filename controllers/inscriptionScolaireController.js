@@ -29,17 +29,11 @@ exports.inscrireEleve = async (req, res) => {
     }
 
 
-    function nettoyerNomFichier(str) {
-      return str
-        // Supprimer "élève/" au début
-        .replace(/^élève\//, "")
-        // Supprimer l'extension à la fin (ex: .pgn, .jpg, .png, etc.)
-        .replace(/\.[^.]+$/, "");
-    }
-
+    
+    let  matricule=genererMatricule(prenom,nom,lieuNaissance)
     // Créer l’élève
     const eleve = new Eleve({
-      matricule:genererMatricule(prenom,nom,lieuNaissance),
+      matricule:matricule,
       nom,
       prenom,
       dateNaissance,
