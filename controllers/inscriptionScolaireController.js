@@ -11,6 +11,7 @@ const genererMatricule = require('../utils/genereMatricule');
 // Inscrire un nouvel élève
 // -------------------
 exports.inscrireEleve = async (req, res) => {
+   let matricule;
   try {
     const { nom, prenom, classeId, anneeScolaireId, dateNaissance,lieuNaissance, sexe, montantPaye } = req.body;
     
@@ -44,7 +45,7 @@ exports.inscrireEleve = async (req, res) => {
 }
 
     // Générer le matricule
-    let matricule;
+   
     if(!req.file){
       matricule = genererMatricule(prenom,nom,lieuNaissance);
     } else {
