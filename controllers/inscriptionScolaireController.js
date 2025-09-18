@@ -80,7 +80,7 @@ exports.inscrireEleve = async (req, res) => {
     //creation de compte de l'eleve
     const user = new User({
       pseudo: nom + prenom,
-      email: matricule,
+      email: eleve.matricule,
       password: hashedPassword,
       role: 'eleve',
       photo: req.file ? `/uploads/${req.file.path}` : "/uploads/profile.png",
