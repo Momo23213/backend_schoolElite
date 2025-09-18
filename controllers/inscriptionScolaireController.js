@@ -43,12 +43,13 @@ exports.inscrireEleve = async (req, res) => {
   return str;
 }
 
-       let matricule;
-        if(!req.file){
-          matricule= genererMatricule(prenom,nom,lieuNaissance)
-        }else{
-          matricule=removePrefixSuffix(req.file.filename, "élève/", ".")
-        }
+    // Générer le matricule
+    let matricule;
+    if(!req.file){
+      matricule = genererMatricule(prenom,nom,lieuNaissance);
+    } else {
+      matricule = removePrefixSuffix(req.file.filename, "élève/", ".");
+    }
 
     // Créer l’élève
     const eleve = new Eleve({
@@ -80,7 +81,7 @@ exports.inscrireEleve = async (req, res) => {
       email: matricule,
       password: hashedPassword,
       role: 'eleve',
-      photo: req.file ? `/uploads/${req.file.filename}` : "/uploads/profile.png",
+      photo: req.file ? `/uploads/${req.file.path}` : "/uploads/profile.png",
       id_eleve:eleve._id
     });
     await user.save();
