@@ -61,7 +61,7 @@ exports.inscrireEleve = async (req, res) => {
       dateNaissance,
       lieuNaissance,
       sexe,
-       photo: req.file ? `${req.file.path}` : "/uploads/profile.png",
+       photo: req.file ? req.file.path : "/uploads/profile.png",
       classeId,
       fraisId:frais._id,
       parcours: [{
@@ -83,7 +83,7 @@ exports.inscrireEleve = async (req, res) => {
       email: eleve.matricule,
       password: hashedPassword,
       role: 'eleve',
-      photo: req.file ? `/uploads/${req.file.path}` : "/uploads/profile.png",
+      photo: req.file ? req.file.path : "/uploads/profile.png",
       id_eleve:eleve._id
     });
     await user.save();
