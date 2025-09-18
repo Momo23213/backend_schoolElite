@@ -1,6 +1,8 @@
 const Enseignant = require('../models/enseignant');
 const path = require('path');
 const fs = require('fs');
+const User = require('../models/user');
+const bcrypt = require('bcryptjs');
 
 // GET all
 exports.getAllEnseignants = async (req, res) => {
@@ -31,6 +33,17 @@ exports.createEnseignant = async (req, res) => {
 
     const newEnseignant = new Enseignant(data);
     const savedEnseignant = await newEnseignant.save();
+   const hash=await bcrypt.hash("12345678", 10);
+    
+    const user = new User({
+          pseudo: data.nom + data.prenom,
+          email: data.email,
+          password: hash,
+          role: 'enseignant',
+          id_prof:newEnseignant._id
+        });
+        await user.save();
+
     res.status(201).json(savedEnseignant);
   } catch (err) {
     res.status(500).json({ message: err.message });
