@@ -46,7 +46,7 @@ exports.getClasseById = async (req, res) => {
     const classe = await Classe.findById(classeId)
       .populate('enseignants', 'nom prenom')
       .populate('anneeScolaireId', 'nomDebut nomFin')
-      .populate('eleves', 'nom prenom photo');
+      .populate('eleves', 'nom prenom photo matricule');
 
     if (!classe) return res.status(404).json({ message: 'Classe introuvable' });
 
